@@ -265,7 +265,7 @@ const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*Q*/    FN5 ,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,HOME, FN2, END, FN3,TRNS,TRNS,     INS,      TRNS,TRNS,TRNS,    TRNS,TRNS,TRNS,TRNS,    TRNS,TRNS,
 /*A*/    TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,LEFT,DOWN,  UP,RGHT,BSPC,TRNS,     TRNS,TRNS,                        TRNS,TRNS,TRNS,TRNS,    TRNS,TRNS,
 /*Z*/    TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS, ENT,TRNS,TRNS,TRNS,     TRNS,TRNS,          TRNS,         TRNS,TRNS,TRNS,TRNS,    TRNS,TRNS,
-/*C*/    TRNS,TRNS,TRNS,TRNS,TRNS,     TRNS,     TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,     TRNS,TRNS,TRNS,    TRNS,     TRNS,TRNS,    TRNS,TRNS
+/*C*/    TRNS,TRNS,TRNS,TRNS,TRNS,     HENK,     TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,     TRNS,TRNS,TRNS,    TRNS,     TRNS,TRNS,    TRNS,TRNS
     ),
 };
 
@@ -328,8 +328,10 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 		} else { // released.
 			layer_move(0);
 			if(1 == record->tap.count) {
-				register_code(KC_HENK);   // to KOR
-				unregister_code(KC_HENK);
+				//register_code(KC_HENK);   // to KOR
+				//unregister_code(KC_HENK);
+				register_code(KC_MHEN);   // to ENG
+				unregister_code(KC_MHEN);
 				send_keyboard_report();
 			}
 			if((get_mods() & MOD_BIT(KC_LALT))) {
