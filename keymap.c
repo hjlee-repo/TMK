@@ -228,18 +228,19 @@ const uint8_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
        FN0: Hanja, Layer1 key
-       FN1: LBRC ([), ctrl-[, 
+       FN1: LBRC ([), ctrl-[, to Eng
        FN2: Ctrl-Insert, Copy
        FN3: Shift-Insert, Paste
        FN4: Caplock -> LCTRL
        FN5: Hanja-Tab -> Alt-TAB
+       FN6: Ctrl-L, to Eng
     */
     [0] = KEYMAP_ALL(
 /* */              F13, F14, F15, F16, F17, F18, F19, F20, F21, F22, F23, F24,
 /*F*/    ESC,      F1,  F2,  F3,  F4,  F5,  F6,  F7,  F8,  F9,  F10, F11, F12,           PSCR,SLCK,PAUS,    VOLD,VOLU,MUTE,PWR,     HELP,
 /*1*/    GRV, 1,   2,   3,   4,   5,   6,   7,   8,   9,   0,   MINS,EQL, JYEN,BSPC,     INS, HOME,PGUP,    NLCK,PSLS,PAST,PMNS,    STOP,AGIN,
 /*Q*/    TAB, Q,   W,   E,   R,   T,   Y,   U,   I,   O,   P,   FN1,RBRC,     BSLS,     DEL, END, PGDN,    P7,  P8,  P9,  PPLS,    MENU,UNDO,
-/*A*/    FN4, A,   S,   D,   F,   G,   H,   J,   K,   L,   SCLN,QUOT,     NUHS,ENT,                         P4,  P5,  P6,  PCMM,    SLCT,COPY,
+/*A*/    FN4, A,   S,   D,   F,   G,   H,   J,   K, FN6,   SCLN,QUOT,     NUHS,ENT,                         P4,  P5,  P6,  PCMM,    SLCT,COPY,
 /*Z*/    LSFT,NUBS,Z,   X,   C,   V,   B,   N,   M,   COMM,DOT, SLSH,     RO,  RSFT,          UP,           P1,  P2,  P3,  PEQL,    EXEC,PSTE,
 /*C*/    LCTL,LGUI,LALT,MHEN,FN0,     SPC,       HAEN,HENK,KANA,RALT,RGUI,APP, RCTL,     LEFT,DOWN,RGHT,    P0,       PDOT,PENT,    FIND,CUT
     ),
@@ -272,18 +273,7 @@ enum function_id {
 	_HANJ = 0      // FN0
 	, _LBRC        // FN1
 	, _TAB         // FN5
-/*
-	 _LCTRL =0   // FN0 -- not used
-	, _LSFT      // FN1
-	, _LALT      // FN2
-	, _HANJ      // FN3
-	, _SPC0      // FN4
-	, _SCLN      // FN5
-	, _QUOT      // FN6
-	, _RBRC      // FN7
-	, _ENT       // FN8
-	, _SPC1      // FN9
-*/
+	, _L           // FN6
 };
 
 const action_t PROGMEM fn_actions[] = {
@@ -298,6 +288,7 @@ const action_t PROGMEM fn_actions[] = {
     [3] = ACTION_MODS_KEY(MOD_LSFT, KC_INS),
     [4] = ACTION_MODS_TAP_KEY(MOD_LCTL, KC_MHEN),
     [5] = ACTION_FUNCTION(_TAB),
+    [6] = ACTION_FUNCTION(_L),
 };
 
 /********************** not used ******************************
@@ -363,14 +354,14 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 		break;
 	case _LBRC:
 		if(1 == record->event.pressed) {
-				register_code(KC_LBRC);
-				// conv to ENG.
-				if(get_mods() & MOD_BIT(KC_LCTRL)) {
-				  register_code(KC_MHEN); // scancode: 0x7B, to ENG
-				  unregister_code(KC_MHEN);
-				}
+			register_code(KC_LBRC);
+			// conv to ENG.
+			if(get_mods() & MOD_BIT(KC_LCTRL)) {
+			  register_code(KC_MHEN); // scancode: 0x7B, to ENG
+			  unregister_code(KC_MHEN);
+			}
 		} else { // Release
-				unregister_code(KC_LBRC);
+			unregister_code(KC_LBRC);
 		}
 		send_keyboard_report();
 		break;
@@ -383,6 +374,19 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 			register_code(KC_TAB);
 		} else {
 			unregister_code(KC_TAB);
+		}
+		send_keyboard_report();
+		break;
+	case _L:
+		if(1 == record->event.pressed) {
+			register_code(KC_L);
+			// conv to ENG.
+			if(get_mods() & MOD_BIT(KC_LCTRL)) {
+			  register_code(KC_MHEN); // scancode: 0x7B, to ENG
+			  unregister_code(KC_MHEN);
+			}
+		} else { // Release
+			unregister_code(KC_L);
 		}
 		send_keyboard_report();
 		break;
